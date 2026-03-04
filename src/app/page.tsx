@@ -259,6 +259,53 @@ export default function Goliard() {
 
         /* Glow */
         .glow { position: absolute; border-radius: 50%; pointer-events: none; }
+
+        /* Responsive - Mobile */
+        @media (max-width: 768px) {
+          /* Hide cursor on touch devices */
+          body { cursor: auto; }
+          a, button { cursor: pointer; }
+          .cursor-dot, .cursor-ring { display: none; }
+
+          /* Nav */
+          .nav-desktop { display: none !important; }
+          .nav-toggle { display: flex !important; }
+          #mobile-menu { display: none !important; }
+
+          /* Hero */
+          .hero-content { grid-template-columns: 1fr !important; gap: 32px !important; }
+          .hero-side { display: none !important; }
+          .hero-corner { display: none !important; }
+          .hero-scroll { display: none !important; }
+
+          /* Sections */
+          .section-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
+          .tension-grid { grid-template-columns: 1fr 1fr !important; }
+          .pillars-scroll { padding: 0 20px !important; }
+          .pillars-container { padding: 0 20px !important; }
+          .community-grid { grid-template-columns: 1fr !important; }
+          .waitlist-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
+          
+          /* Footer */
+          .footer-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+          .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+        }
+
+        /* Mobile nav button */
+        .nav-toggle { display: none; width: 32px; height: 32px; flex-direction: column; justify-content: center; align-items: center; gap: 6px; background: none; border: none; cursor: pointer; }
+        .nav-toggle span { display: block; width: 24px; height: 1.5px; background: var(--ivory); transition: transform 0.3s, opacity 0.3s; }
+
+        /* Extra small screens */
+        @media (max-width: 480px) {
+          .tension-grid { grid-template-columns: 1fr !important; }
+          .p-card { width: 260px !important; }
+        }
+
+        /* Touch device detection */
+        @media (hover: none) and (pointer: coarse) {
+          body { cursor: auto; }
+          .cursor-dot, .cursor-ring { display: none !important; }
+        }
       `}</style>
 
       <Cursor />
@@ -268,57 +315,82 @@ export default function Goliard() {
       <nav style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 50,
         display: "flex", justifyContent: "space-between", alignItems: "center",
-        padding: "24px 48px",
+        padding: "20px 24px",
         background: "linear-gradient(to bottom, rgba(10,9,8,0.95) 0%, transparent 100%)",
         backdropFilter: "blur(12px)",
       }}>
-        <a href="#" style={{ fontFamily: "var(--serif)", fontSize: 22, fontWeight: 400, color: "var(--ivory)", textDecoration: "none", letterSpacing: "0.08em" }}>
+        <a href="#" style={{ fontFamily: "var(--serif)", fontSize: 20, fontWeight: 400, color: "var(--ivory)", textDecoration: "none", letterSpacing: "0.08em" }}>
           Goliard
         </a>
-        <div style={{ display: "flex", gap: 36, alignItems: "center" }}>
+        <div className="nav-desktop" style={{ display: "flex", gap: 28, alignItems: "center" }}>
           {["Features", "Manifesto", "Community"].map(n => (
             <a key={n} href={`#${n.toLowerCase()}`} className="nav-link">{n}</a>
           ))}
-          <a href="#waitlist" className="btn" style={{ padding: "11px 24px" }}>
+          <a href="#waitlist" className="btn" style={{ padding: "11px 20px" }}>
             <span>Join Waitlist</span><Arrow />
           </a>
         </div>
+        <button className="nav-toggle" aria-label="Menu" style={{ display: "none" }} onClick={() => {
+          const menu = document.getElementById('mobile-menu');
+          if (menu) menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+        }}>
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </nav>
+      
+      {/* Mobile Menu */}
+      <div id="mobile-menu" style={{
+        display: "none", position: "fixed", top: 70, left: 0, right: 0, bottom: 0,
+        background: "var(--ink)", zIndex: 49, padding: "32px 24px",
+        flexDirection: "column", gap: 24
+      }}>
+        {["Features", "Manifesto", "Community", "Waitlist"].map(n => (
+          <a key={n} href={`#${n.toLowerCase().replace(" ", "")}`}
+            style={{ fontFamily: "var(--serif)", fontSize: 28, color: "var(--ivory)", textDecoration: "none" }}
+            onClick={() => {
+              const menu = document.getElementById('mobile-menu');
+              if (menu) menu.style.display = 'none';
+            }}
+          >{n}</a>
+        ))}
+      </div>
 
       {/* ── HERO ─────────────────────────────────────────────── */}
-      <section style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "flex-end", padding: "0 48px 96px", overflow: "hidden" }}>
+      <section style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "flex-end", padding: "120px 24px 64px", overflow: "hidden" }}>
         {/* BG */}
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 65% 65% at 75% 35%, #1e110a 0%, transparent 65%), radial-gradient(ellipse 50% 50% at 15% 75%, #140d07 0%, transparent 55%), var(--ink)" }} />
         {/* Subtle grid */}
         <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)", backgroundSize: "80px 80px", maskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 80%)" }} />
         {/* Orange glow */}
-        <div className="glow" style={{ width: 500, height: 500, top: "10%", right: "15%", background: "radial-gradient(circle, rgba(192,86,33,0.12) 0%, transparent 70%)" }} />
+        <div className="glow" style={{ width: 300, height: 300, top: "10%", right: "-10%", background: "radial-gradient(circle, rgba(192,86,33,0.12) 0%, transparent 70%)" }} />
 
         {/* Deco line */}
-        <div style={{ position: "absolute", top: 0, right: "38%", width: 1, height: "100%", background: "linear-gradient(to bottom, transparent 10%, rgba(192,86,33,0.1) 50%, transparent 90%)" }} />
+        <div style={{ position: "absolute", top: 0, right: "20%", width: 1, height: "100%", background: "linear-gradient(to bottom, transparent 10%, rgba(192,86,33,0.1) 50%, transparent 90%)" }} />
 
-        {/* Corner label */}
-        <div style={{ position: "absolute", top: 130, left: 48, display: "flex", alignItems: "center", gap: 12, fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.35em", textTransform: "uppercase", color: "var(--ember)", animation: "fadeUp 1s ease 0.3s both" }}>
+        {/* Corner label - hide on mobile */}
+        <div className="hero-corner" style={{ position: "absolute", top: 100, left: 24, display: "flex", alignItems: "center", gap: 12, fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.35em", textTransform: "uppercase", color: "var(--ember)", animation: "fadeUp 1s ease 0.3s both" }}>
           <span style={{ display: "block", width: 32, height: 1, background: "var(--ember)" }} />
           Est. 2025 — Lifestyle Platform
         </div>
 
         {/* Hero content */}
-        <div style={{ position: "relative", zIndex: 2, maxWidth: 900, display: "grid", gridTemplateColumns: "1fr auto", gap: 64, alignItems: "flex-end", width: "100%" }}>
+        <div className="hero-content" style={{ position: "relative", zIndex: 2, maxWidth: 900, display: "grid", gridTemplateColumns: "1fr auto", gap: 48, alignItems: "flex-end", width: "100%" }}>
           <div>
-            <p style={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 24, animation: "fadeUp 1s ease 0.5s both" }}>
+            <p style={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.3em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 20, animation: "fadeUp 1s ease 0.5s both" }}>
               For scholars. For wanderers. For those who are both.
             </p>
-            <h1 style={{ fontFamily: "var(--serif)", fontWeight: 400, lineHeight: 0.88, marginBottom: 40, letterSpacing: "-0.01em", fontSize: "clamp(80px, 12vw, 172px)", animation: "fadeUp 1.1s ease 0.6s both" }}>
+            <h1 style={{ fontFamily: "var(--serif)", fontWeight: 400, lineHeight: 0.88, marginBottom: 32, letterSpacing: "-0.01em", fontSize: "clamp(48px, 12vw, 172px)", animation: "fadeUp 1.1s ease 0.6s both" }}>
               Goli<em style={{ color: "var(--ember)" }}>ard</em>
             </h1>
-            <div style={{ display: "flex", gap: 16, alignItems: "center", animation: "fadeUp 1s ease 0.85s both" }}>
-              <a href="#waitlist" className="btn"><span>Join the Waitlist</span><Arrow /></a>
-              <a href="#features" className="btn btn-ghost"><span>Explore</span><Arrow /></a>
+            <div style={{ display: "flex", gap: 12, alignItems: "center", animation: "fadeUp 1s ease 0.85s both", flexWrap: "wrap" }}>
+              <a href="#waitlist" className="btn" style={{ padding: "14px 24px" }}><span>Join Waitlist</span><Arrow /></a>
+              <a href="#features" className="btn btn-ghost" style={{ padding: "14px 24px" }}><span>Explore</span><Arrow /></a>
             </div>
           </div>
 
-          <div style={{ maxWidth: 260, paddingBottom: 8, animation: "fadeUp 1s ease 0.9s both" }}>
+          <div className="hero-side" style={{ maxWidth: 260, paddingBottom: 8, animation: "fadeUp 1s ease 0.9s both" }}>
             <div style={{ width: 1, height: 56, background: "linear-gradient(to bottom, transparent, var(--ember))", marginBottom: 24 }} />
             <p style={{ fontFamily: "var(--mono)", fontSize: 12, lineHeight: 1.85, color: "var(--mist)" }}>
               The platform for those who balance{" "}
@@ -329,7 +401,7 @@ export default function Goliard() {
         </div>
 
         {/* Scroll text */}
-        <div style={{ position: "absolute", bottom: 40, right: 48, display: "flex", alignItems: "center", gap: 12, fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.3em", textTransform: "uppercase", color: "var(--mist)", animation: "fadeUp 1s ease 1.1s both" }}>
+        <div className="hero-scroll" style={{ position: "absolute", bottom: 24, right: 24, display: "flex", alignItems: "center", gap: 12, fontFamily: "var(--mono)", fontSize: 10, letterSpacing: "0.3em", textTransform: "uppercase", color: "var(--mist)", animation: "fadeUp 1s ease 1.1s both" }}>
           <div style={{ width: 40, height: 1, background: "var(--mist)", position: "relative", overflow: "hidden" }}>
             <div style={{ position: "absolute", inset: 0, background: "var(--ember)", animation: "slideRight 2s ease 2s infinite" }} />
           </div>
@@ -355,13 +427,13 @@ export default function Goliard() {
       </div>
 
       {/* ── TENSION ──────────────────────────────────────────── */}
-      <section id="about" style={{ padding: "120px 48px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, position: "relative", overflow: "hidden" }}>
-        <div className="glow" style={{ width: 600, height: 600, top: "50%", right: -200, transform: "translateY(-50%)", background: "radial-gradient(circle, rgba(192,86,33,0.06) 0%, transparent 70%)" }} />
+      <section id="about" className="section-grid" style={{ padding: "80px 24px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, position: "relative", overflow: "hidden" }}>
+        <div className="glow" style={{ width: 300, height: 300, top: "50%", right: -100, transform: "translateY(-50%)", background: "radial-gradient(circle, rgba(192,86,33,0.06) 0%, transparent 70%)" }} />
 
         <div style={{ position: "relative", zIndex: 1 }}>
           <R>
             <div className="s-label"><span>01</span> The Problem</div>
-            <h2 style={{ fontFamily: "var(--serif)", fontWeight: 400, fontSize: "clamp(32px, 3.5vw, 52px)", lineHeight: 1.2, marginBottom: 28, color: "var(--ivory)" }}>
+            <h2 style={{ fontFamily: "var(--serif)", fontWeight: 400, fontSize: "clamp(28px, 3.5vw, 52px)", lineHeight: 1.2, marginBottom: 20, color: "var(--ivory)" }}>
               Nobody told you that getting your Masters would mean{" "}
               <em style={{ color: "var(--ember)" }}>explaining</em> why you still want to{" "}
               <em style={{ color: "var(--ember)" }}>live</em>.
@@ -372,7 +444,7 @@ export default function Goliard() {
           </R>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
+        <div className="tension-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
           {TENSIONS.map((t, i) => (
             <R key={t.num} d={i * 80}>
               <div className="card" style={{ padding: "36px 28px", minHeight: 200, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
@@ -391,22 +463,22 @@ export default function Goliard() {
       </section>
 
       {/* ── PILLARS ──────────────────────────────────────────── */}
-      <section id="features" style={{ background: "var(--ivory)", color: "var(--ink)", padding: "120px 0 80px" }}>
-        <div style={{ padding: "0 48px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 56 }}>
+      <section id="features" style={{ background: "var(--ivory)", color: "var(--ink)", padding: "80px 0 60px" }}>
+        <div className="pillars-container" style={{ padding: "0 24px", display: "flex", flexDirection: "column", gap: 24, marginBottom: 40 }}>
           <R>
             <div className="s-label" style={{ color: "var(--ember)" }}><span style={{ color: "var(--mist)" }}>02</span> Five Pillars</div>
-            <h2 style={{ fontFamily: "var(--serif)", fontWeight: 400, fontSize: "clamp(40px, 5vw, 68px)", lineHeight: 1.05, color: "var(--ink)" }}>
+            <h2 style={{ fontFamily: "var(--serif)", fontWeight: 400, fontSize: "clamp(32px, 5vw, 68px)", lineHeight: 1.05, color: "var(--ink)" }}>
               What Goliard<br />gives <em style={{ color: "var(--ember)" }}>you</em>
             </h2>
           </R>
           <R d={150}>
-            <p style={{ fontFamily: "var(--mono)", fontSize: 12, lineHeight: 1.8, color: "#8a7d72", maxWidth: 220, textAlign: "right" }}>
+            <p style={{ fontFamily: "var(--mono)", fontSize: 12, lineHeight: 1.8, color: "#8a7d72", maxWidth: 220 }}>
               Five spaces for those who refuse to fragment themselves.
             </p>
           </R>
         </div>
 
-        <div className="no-scroll" style={{ display: "flex", gap: 2, padding: "0 48px", overflowX: "auto" }}>
+        <div className="pillars-scroll no-scroll" style={{ display: "flex", gap: 2, padding: "0 24px", overflowX: "auto" }}>
           {PILLARS.map((p, i) => (
             <div key={p.num} className="p-card" style={{ width: 280, minHeight: 480, padding: "36px 32px", display: "flex", flexDirection: "column", justifyContent: "space-between", position: "relative", overflow: "hidden" }}>
               {/* Ghost letter */}
@@ -436,35 +508,35 @@ export default function Goliard() {
       </section>
 
       {/* ── MANIFESTO ────────────────────────────────────────── */}
-      <section id="manifesto" style={{ padding: "140px 48px", position: "relative", overflow: "hidden" }}>
-        <div className="glow" style={{ width: 700, height: 700, top: "50%", left: -200, transform: "translateY(-50%)", background: "radial-gradient(circle, rgba(192,86,33,0.08) 0%, transparent 60%)" }} />
+      <section id="manifesto" style={{ padding: "80px 24px", position: "relative", overflow: "hidden" }}>
+        <div className="glow" style={{ width: 350, height: 350, top: "50%", left: -100, transform: "translateY(-50%)", background: "radial-gradient(circle, rgba(192,86,33,0.08) 0%, transparent 60%)" }} />
 
         <div style={{ maxWidth: 860, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <R>
             <div className="s-label"><span>03</span> Manifesto</div>
-            <h2 style={{ fontFamily: "var(--serif)", fontWeight: 400, fontSize: "clamp(52px, 8vw, 100px)", lineHeight: 0.92, marginBottom: 72, letterSpacing: "-0.01em" }}>
+            <h2 style={{ fontFamily: "var(--serif)", fontWeight: 400, fontSize: "clamp(36px, 8vw, 100px)", lineHeight: 0.92, marginBottom: 48, letterSpacing: "-0.01em" }}>
               <em>Dear</em><br />Goliard,
             </h2>
           </R>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
             <R d={100}>
-              <blockquote style={{ fontFamily: "var(--serif)", fontStyle: "italic", fontSize: "clamp(22px, 2.5vw, 34px)", lineHeight: 1.45, borderLeft: "2px solid var(--ember)", paddingLeft: 36, color: "var(--ivory)" }}>
+              <blockquote style={{ fontFamily: "var(--serif)", fontStyle: "italic", fontSize: "clamp(18px, 2.5vw, 34px)", lineHeight: 1.45, borderLeft: "2px solid var(--ember)", paddingLeft: 20, color: "var(--ivory)" }}>
                 "You were told you couldn't have it all. That choosing academia meant choosing solitude."
               </blockquote>
             </R>
             <R d={180}>
-              <p style={{ fontFamily: "var(--serif)", fontSize: "clamp(18px, 2vw, 26px)", lineHeight: 1.65, color: "rgba(244,237,228,0.7)", paddingLeft: 36 }}>
+              <p style={{ fontFamily: "var(--serif)", fontSize: "clamp(16px, 2vw, 26px)", lineHeight: 1.65, color: "rgba(244,237,228,0.7)", paddingLeft: 20 }}>
                 But nobody told you about the ones who did <em style={{ color: "var(--ember)" }}>both</em>. Who finished their theses <em style={{ color: "var(--ember)" }}>and</em> watched the sunset in Santorini. Who fell in love deeply <em style={{ color: "var(--ember)" }}>and</em> published their research.
               </p>
             </R>
             <R d={260}>
-              <p style={{ fontFamily: "var(--serif)", fontSize: "clamp(18px, 2vw, 26px)", lineHeight: 1.65, color: "rgba(244,237,228,0.7)", paddingLeft: 36 }}>
+              <p style={{ fontFamily: "var(--serif)", fontSize: "clamp(16px, 2vw, 26px)", lineHeight: 1.65, color: "rgba(244,237,228,0.7)", paddingLeft: 20 }}>
                 Goliard is for you — the one who reads theory by day and dances by night. Unapologetically intellectual <em style={{ color: "var(--ember)" }}>and</em> unapologetically alive.
               </p>
             </R>
             <R d={340}>
-              <blockquote style={{ fontFamily: "var(--serif)", fontStyle: "italic", fontSize: "clamp(22px, 2.5vw, 34px)", lineHeight: 1.45, borderLeft: "2px solid var(--ember)", paddingLeft: 36, color: "var(--ivory)" }}>
+              <blockquote style={{ fontFamily: "var(--serif)", fontStyle: "italic", fontSize: "clamp(18px, 2.5vw, 34px)", lineHeight: 1.45, borderLeft: "2px solid var(--ember)", paddingLeft: 20, color: "var(--ivory)" }}>
                 "You are not broken for wanting more. You are not too much for being whole."
               </blockquote>
             </R>
@@ -479,29 +551,29 @@ export default function Goliard() {
       </section>
 
       {/* ── COMMUNITY ────────────────────────────────────────── */}
-      <section id="community" style={{ background: "var(--ivory2)", color: "var(--ink)", padding: "120px 48px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 56 }}>
+      <section id="community" style={{ background: "var(--ivory2)", color: "var(--ink)", padding: "80px 24px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 32, marginBottom: 40 }}>
           <R>
             <div className="s-label"><span style={{ color: "var(--mist)" }}>04</span> Community</div>
-            <h2 style={{ fontFamily: "var(--serif)", fontWeight: 400, fontSize: "clamp(40px, 5vw, 64px)", lineHeight: 1.05, color: "var(--ink)" }}>
+            <h2 style={{ fontFamily: "var(--serif)", fontWeight: 400, fontSize: "clamp(32px, 5vw, 64px)", lineHeight: 1.05, color: "var(--ink)" }}>
               Who you'll<br />meet <em style={{ color: "var(--ember)" }}>here</em>
             </h2>
           </R>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2 }}>
+        <div className="community-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2 }}>
           {MEMBERS.map((m, i) => (
             <R key={m.name} d={i * 100}>
-              <div className="m-card" style={{ padding: "48px 40px", position: "relative", overflow: "hidden", minHeight: 420 }}>
-                <div style={{ position: "absolute", bottom: -24, right: -16, fontFamily: "var(--serif)", fontSize: 180, fontStyle: "italic", color: "rgba(192,86,33,0.05)", lineHeight: 1, pointerEvents: "none" }}>{m.name[0]}</div>
+              <div className="m-card" style={{ padding: "32px 24px", position: "relative", overflow: "hidden", minHeight: 380 }}>
+                <div style={{ position: "absolute", bottom: -24, right: -16, fontFamily: "var(--serif)", fontSize: 120, fontStyle: "italic", color: "rgba(192,86,33,0.05)", lineHeight: 1, pointerEvents: "none" }}>{m.name[0]}</div>
 
-                <div style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "var(--mono)", fontSize: 9, letterSpacing: "0.4em", textTransform: "uppercase", color: "var(--ember)", marginBottom: 24 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "var(--mono)", fontSize: 9, letterSpacing: "0.4em", textTransform: "uppercase", color: "var(--ember)", marginBottom: 20 }}>
                   <span style={{ display: "block", width: 20, height: 1, background: "var(--ember)" }} />
                   {m.city}
                 </div>
-                <h3 style={{ fontFamily: "var(--serif)", fontWeight: 400, fontSize: 52, lineHeight: 1, marginBottom: 6, color: "var(--ink)" }}>{m.name}</h3>
-                <div style={{ fontFamily: "var(--mono)", fontSize: 11, color: "#8a7d72", borderBottom: "1px solid rgba(10,9,8,0.07)", paddingBottom: 24, marginBottom: 24 }}>{m.degree}</div>
-                <p style={{ fontFamily: "var(--serif)", fontStyle: "italic", fontSize: 17, lineHeight: 1.7, color: "#5a5047", position: "relative", zIndex: 1 }}>"{m.quote}"</p>
+                <h3 style={{ fontFamily: "var(--serif)", fontWeight: 400, fontSize: 36, lineHeight: 1, marginBottom: 6, color: "var(--ink)" }}>{m.name}</h3>
+                <div style={{ fontFamily: "var(--mono)", fontSize: 11, color: "#8a7d72", borderBottom: "1px solid rgba(10,9,8,0.07)", paddingBottom: 20, marginBottom: 20 }}>{m.degree}</div>
+                <p style={{ fontFamily: "var(--serif)", fontStyle: "italic", fontSize: 15, lineHeight: 1.7, color: "#5a5047", position: "relative", zIndex: 1 }}>"{m.quote}"</p>
               </div>
             </R>
           ))}
@@ -509,13 +581,13 @@ export default function Goliard() {
       </section>
 
       {/* ── WAITLIST ─────────────────────────────────────────── */}
-      <section id="waitlist" style={{ padding: "140px 48px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 100, position: "relative", overflow: "hidden" }}>
-        <div className="glow" style={{ width: 600, height: 600, top: -100, right: -100, background: "radial-gradient(circle, rgba(192,86,33,0.1) 0%, transparent 65%)" }} />
+      <section id="waitlist" className="waitlist-grid" style={{ padding: "80px 24px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, position: "relative", overflow: "hidden" }}>
+        <div className="glow" style={{ width: 300, height: 300, top: -50, right: -50, background: "radial-gradient(circle, rgba(192,86,33,0.1) 0%, transparent 65%)" }} />
 
         <div style={{ position: "relative", zIndex: 1 }}>
           <R>
             <div className="s-label"><span>05</span> Early Access</div>
-            <h2 style={{ fontFamily: "var(--serif)", fontWeight: 400, fontSize: "clamp(38px, 4.5vw, 62px)", lineHeight: 1.1, marginBottom: 24, color: "var(--ivory)" }}>
+            <h2 style={{ fontFamily: "var(--serif)", fontWeight: 400, fontSize: "clamp(28px, 4.5vw, 62px)", lineHeight: 1.1, marginBottom: 20, color: "var(--ivory)" }}>
               They're building<br />something.
               <br /><em style={{ color: "var(--ember)" }}>Are you in?</em>
             </h2>
@@ -553,11 +625,11 @@ export default function Goliard() {
       </section>
 
       {/* ── FOOTER ───────────────────────────────────────────── */}
-      <footer style={{ background: "#080706", borderTop: "1px solid var(--border)", padding: "72px 48px 40px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 48, marginBottom: 64 }}>
+      <footer style={{ background: "#080706", borderTop: "1px solid var(--border)", padding: "56px 24px 32px" }}>
+        <div className="footer-grid" style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr", gap: 40, marginBottom: 48 }}>
           <div>
-            <h3 style={{ fontFamily: "var(--serif)", fontSize: 48, fontWeight: 400, marginBottom: 16, color: "var(--ivory)" }}>Goliard</h3>
-            <p style={{ fontFamily: "var(--mono)", fontSize: 12, lineHeight: 1.85, color: "var(--mist)", maxWidth: 260, marginBottom: 28 }}>
+            <h3 style={{ fontFamily: "var(--serif)", fontSize: 36, fontWeight: 400, marginBottom: 16, color: "var(--ivory)" }}>Goliard</h3>
+            <p style={{ fontFamily: "var(--mono)", fontSize: 12, lineHeight: 1.85, color: "var(--mist)", maxWidth: 260, marginBottom: 24 }}>
               A lifestyle platform for those who balance brilliance with wildness. Because you shouldn't have to choose.
             </p>
             <div style={{ display: "flex", gap: 8 }}>
@@ -579,8 +651,8 @@ export default function Goliard() {
             { h: "Legal", links: ["Privacy Policy", "Terms of Use", "Cookies"] },
           ].map(col => (
             <div key={col.h}>
-              <div style={{ fontFamily: "var(--mono)", fontSize: 9, letterSpacing: "0.4em", textTransform: "uppercase", color: "var(--mist2)", marginBottom: 24 }}>{col.h}</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <div style={{ fontFamily: "var(--mono)", fontSize: 9, letterSpacing: "0.4em", textTransform: "uppercase", color: "var(--mist2)", marginBottom: 20 }}>{col.h}</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {col.links.map(l => (
                   <a key={l} href="#" style={{ fontFamily: "var(--mono)", fontSize: 12, color: "var(--mist)", textDecoration: "none", transition: "color 0.2s" }}
                     onMouseEnter={e => e.currentTarget.style.color = "var(--ember)"}
@@ -591,9 +663,9 @@ export default function Goliard() {
           ))}
         </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 28, borderTop: "1px solid var(--border)" }}>
+        <div className="footer-bottom" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 24, borderTop: "1px solid var(--border)" }}>
           <span style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--mist)" }}>© {new Date().getFullYear()} Goliard. All rights reserved.</span>
-          <span style={{ fontFamily: "var(--serif)", fontStyle: "italic", fontSize: 18, color: "var(--ember)" }}>For those who want both.</span>
+          <span style={{ fontFamily: "var(--serif)", fontStyle: "italic", fontSize: 16, color: "var(--ember)" }}>For those who want both.</span>
         </div>
       </footer>
     </>
