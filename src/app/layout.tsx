@@ -17,23 +17,23 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Goliard | A Lifestyle Platform for Graduate Women",
+  title: "Goliard | A Lifestyle Platform for Graduate Scholars",
   description:
-    "Goliard is a lifestyle platform for women in graduate school navigating the beautiful contradiction of being deeply intellectual AND deeply alive: in love, in motion, in discovery.",
+    "Goliard is a lifestyle platform for scholars navigating the beautiful contradiction of being deeply intellectual AND deeply alive: in love, in motion, in discovery.",
   keywords: [
     "Goliard",
-    "graduate women",
+    "graduate students",
     "lifestyle",
     "travel",
     "academic",
     "Pan-African",
-    "women in grad school",
+    "grad school",
     "travel diary",
     "academic wellness",
   ],
   authors: [{ name: "Goliard" }],
   openGraph: {
-    title: "Goliard | A Lifestyle Platform for Graduate Women",
+    title: "Goliard | A Lifestyle Platform for Graduate Scholars",
     description:
       "You can be brilliant AND unbothered. Ambitious AND in love. Graduating AND going somewhere wild.",
     type: "website",
