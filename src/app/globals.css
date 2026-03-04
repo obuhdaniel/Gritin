@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+/* Brand Color Palette from SKILLS.MD */
+:root {
+  /* Primary: Deep terracotta / burnt sienna */
+  --color-primary-900: #8B2F07;
+  --color-primary-700: #C1440E;
+  --color-primary-500: #D4622A;
+  --color-primary-300: #E89B6D;
+
+  /* Secondary: Warm sand / golden ochre */
+  --color-secondary-500: #E8C88A;
+  --color-secondary-300: #F5E6C8;
+  --color-secondary-100: #FAF3E8;
+
+  /* Dark: Rich espresso brown */
+  --color-dark-900: #0D0705;
+  --color-dark-800: #1C0F0A;
+  --color-dark-700: #2D1A12;
+  --color-dark-500: #4A2F22;
+
+  /* Accent: Sage green */
+  --color-accent-500: #7A9E7E;
+  --color-accent-300: #A5C4A7;
+  --color-accent-100: #D4E5D3;
+
+  /* Light: Cream white */
+  --color-light: #FAF6F0;
+  --color-light-warm: #F8F4ED;
+
+  /* Semantic */
+  --background: var(--color-light);
+  --foreground: var(--color-dark-800);
+}
+
+/* Tailwind v4 Theme Configuration */
+@theme inline {
+  /* Colors */
+  --color-primary: var(--color-primary-700);
+  --color-primary-light: var(--color-primary-500);
+  --color-primary-dark: var(--color-primary-900);
+  
+  --color-secondary: var(--color-secondary-500);
+  --color-secondary-light: var(--color-secondary-300);
+  --color-secondary-soft: var(--color-secondary-100);
+  
+  --color-dark: var(--color-dark-800);
+  --color-dark-deep: var(--color-dark-900);
+  --color-dark-warm: var(--color-dark-700);
+  
+  --color-accent: var(--color-accent-500);
+  --color-accent-light: var(--color-accent-300);
+  --color-accent-soft: var(--color-accent-100);
+  
+  --color-cream: var(--color-light);
+  --color-cream-warm: var(--color-light-warm);
+
+  /* Typography */
+  --font-display: var(--font-cormorant);
+  --font-body: var(--font-dm-sans);
+  
+  /* Animation durations */
+  --animate-fade-in: fadeIn 0.8s ease-out forwards;
+  --animate-fade-in-up: fadeInUp 0.8s ease-out forwards;
+  --animate-fade-in-delay: fadeInDelay 1.2s ease-out forwards;
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDelay {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Base styles */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+/* Fluid typography using clamp() */
+html {
+  font-size: clamp(14px, 1.2vw, 18px);
+}
+
+/* Selection styling */
+::selection {
+  background-color: var(--color-primary-300);
+  color: var(--color-dark-900);
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-secondary-100);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary-500);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-700);
+}
